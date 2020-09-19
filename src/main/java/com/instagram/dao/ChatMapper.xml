@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.instagram.dao.ChatMapper">
+	<select id="getChatListById"
+		resultType="com.instagram.dto.ChatDto">
+		SELECT * FROM CHAT WHERE (
+		((fromID=#{fromID} AND toID=#{toID})
+		OR (fromID=#{toID} AND toID=#{fromID})) AND chatID >
+		#{chatID})
+		ORDER BY chatTime
+	</select>
+
+	<select id="getChatListByRecent"
+		resultType="com.instagram.dto.ChatDto">
+		SELECT * FROM CHAT WHERE ((fromID=#{fromID} AND
+		toID=#{toID})OR(fromID=#{toID} AND toID=#{fromID})) AND chatID >
+		(SELECT MAX(chatID)-10 from chat where (fromID=#{fromID} AND
+		toID=#{toID})OR(fromID=#{toID} AND toID=#{fromID}))
+		ORDER BY chatTime
+	</select>
+	<insert id="submit">
+		INSERT INTO CHAT VALUES(NULL,#{fromID},#{toID},#{chatContent},NOW(),0)
+	</insert>
+	<update id="readChat">
+		update chat set chatRead=1 where(fromID=#{toID} AND toID=#{fromID})
+	</update>
+	
+	<select id="getAllUnreadChat" resultType="int">
+		select count(chatID) from chat where toID=#{userID} and chatRead=0
+	</select>
+	
+	<select id="getBox"
+		resultType="com.instagram.dto.ChatDto">
+		select * from chat where chatID in(select Max(chatID) from chat where toID=#{userID} or fromID=#{userID} group by fromID,toID);
+	</select>
+	
+	<select id="geUnreadChat" resultType="int">
+		select count(chatID) from chat where fromID=#{fromId} and toID=#{toId} and chatRead=0
+	</select>
+	
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.instagram.dao.ImageMapper">
+
+	<insert id="insertImage">
+		insert into image(location,writer,filename,caption,createDate)
+		values(#{location},#{writer},#{filename},#{caption},now())
+	</insert>
+	
+	<select id="getImageList" resultType="com.instagram.dto.ImageDto">
+		select * from image order by imgNo desc
+	</select>
+	
+	<select id="getImgCnt" resultType="int">
+		select count(*) from  image where writer=#{id}
+	</select>
+	
+	<!-- 프로필 페이지의 이미지 불러오기  -->
+	<select id="getImagesbyId" resultType="com.instagram.dto.ImageDto">
+		select * from image where writer=#{id}
+	</select>
+	
+	<!-- 프로필 페이지의 이미지  -->
+	<select id="countByImageId" resultType="int">
+		select count(*) from likes where postNo=#{imgNo}
+	</select>
+
+</mapper>
