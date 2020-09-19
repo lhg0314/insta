@@ -4,9 +4,9 @@
 ### 개발 환경
 
 > 사용언어: java,jsp,javascript
-> 프레임 워크 : spring boot , mybatis
-> db : mysql
-> 기타 : bootstrap, jquery
+ 프레임 워크 : spring boot , mybatis
+ db : mysql
+ 기타 : bootstrap, jquery
 
 ### 구현기능
 
